@@ -7,7 +7,7 @@ public class County {
     private int id;
     private String countyName;
     private String countyCode;
-    private int cityId;
+    private String cityId;
 
     public int getId() {
         return id;
@@ -21,7 +21,7 @@ public class County {
         return countyCode;
     }
 
-    public int getCityId() {
+    public String getCityId() {
         return cityId;
     }
 
@@ -37,7 +37,7 @@ public class County {
         this.countyCode = countyCode;
     }
 
-    public void setCityId(int cityId) {
+    public void setCityId(String cityId) {
         this.cityId = cityId;
     }
 

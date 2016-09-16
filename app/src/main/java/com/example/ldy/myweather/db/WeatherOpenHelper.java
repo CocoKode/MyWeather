@@ -18,13 +18,13 @@ public class WeatherOpenHelper extends SQLiteOpenHelper {
             + "id integer primary key autoincrement, "
             + "city_name text, "
             + "city_code text, "
-            + "province_id integer)";
+            + "province_id text)";
     //county表建表
     public static final String CREATE_COUNTY = "create table county ("
             + "id integer primary key autoincrement, "
             + "county_name text, "
             + "county_code text, "
-            + "city_id integer)";
+            + "city_id text)";
 
 
 
