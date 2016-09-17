@@ -2,7 +2,10 @@ package com.example.ldy.myweather.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -57,6 +60,15 @@ public class ChooseAreaActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences spfs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (spfs.getBoolean("selected_city", false)) {
+            Intent intent = new Intent(this, WeatherActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //加载布局
         setContentView(R.layout.choose_area);
@@ -78,6 +90,14 @@ public class ChooseAreaActivity extends Activity {
                 else if (currLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(i);
                     queryCounty();
+                } else if (currLevel == LEVEL_COUNTY) {
+                    Log.d("chooseareaactivity", "响应点击县列表");
+
+                    String countyCode = countyList.get(i).getCountyCode();
+                    Intent intent = new Intent(ChooseAreaActivity.this, WeatherActivity.class);
+                    intent.putExtra("county_code", countyCode);
+                    startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -160,6 +180,11 @@ public class ChooseAreaActivity extends Activity {
                         }
                     });
                 }
+            }
+
+            @Override
+            public void onBack(String result) {
+                return;
             }
 
             @Override

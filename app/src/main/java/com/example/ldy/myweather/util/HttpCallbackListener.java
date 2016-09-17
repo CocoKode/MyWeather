@@ -7,5 +7,7 @@ public interface HttpCallbackListener {
     //添加onFinish和onError方法
     void onFinish(boolean finish);
 
+    void onBack(String result);
+
     void onError(Exception e);
 }

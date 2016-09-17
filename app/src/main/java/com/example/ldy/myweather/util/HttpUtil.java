@@ -1,5 +1,7 @@
 package com.example.ldy.myweather.util;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,12 +20,14 @@ public class HttpUtil {
 
     public static void sendHttpRequest(final String address, final HttpCallbackListener listener) {
         //开启一个新线程来处理耗时操作
+        Log.d("sendHttpRequest", "发送请求");
         new Thread(new Runnable() {
             @Override
             public void run() {
                 HttpURLConnection connection = null;
 
                 try {
+                    Log.d("sendThread", "开始请求");
                     URL url = new URL(address);
                     connection = (HttpURLConnection) url.openConnection();
                     //首先设定请求方式为get
@@ -34,7 +38,7 @@ public class HttpUtil {
                     //不设置请求头，获得输入流
                     InputStream in = connection.getInputStream();
                     //再套InputStreamReader和BufferedReader读入数据
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in, "utf-8"));
                     //新建一个StringBuilder存储未解析的数据。  ps：当对string进行多次操作的时候优先选用StringBuilder
                     StringBuilder response = new StringBuilder();
                     //读取数据
@@ -44,11 +48,18 @@ public class HttpUtil {
                         response.append(line);
                     }
 
+                    //处理返回的天气信息，主要去掉前三个空格和3.0，替换后为“HeWeatherdataservice”
+                    String result = response.toString();
+                    result = result.replaceFirst(" ", "")
+                            .replaceFirst(" ", "")
+                            .replaceFirst(" 3.0", "");
+
                     //回调listener的方法
                     if (listener != null) {
-                        //listener.onFinish(response.toString());
+                        listener.onBack(result.toString());
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     if (listener != null) {
                         listener.onError(e);
                     }
