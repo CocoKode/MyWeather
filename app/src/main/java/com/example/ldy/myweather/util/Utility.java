@@ -1,6 +1,7 @@
 package com.example.ldy.myweather.util;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -37,6 +38,12 @@ public class Utility {
 
     private static Set<String> provinces = new HashSet<String>();
     private static Set<String> cities = new HashSet<String>();
+    /*
+    private Context context;
+    public Utility(Context context) {
+        this.context = context;
+    }
+    */
 
     public static void handleAllCities(final WeatherDB db, final Context context, final HttpCallbackListener listener) {
         File file = context.getDatabasePath(WeatherDB.DB_NAME);
@@ -128,7 +135,7 @@ public class Utility {
      * 要取的数据有城市名，最高温度，最低温度，天气状况，发布时间
      */
 
-    public static void handleWeatherResponse(Context context, String result) {
+    public static void handleWeatherResponse(Context content, String result) {
         try {
             //得到整个返回数据解析成的JSONObject
             JSONObject JSONAll = new JSONObject(result);
@@ -159,7 +166,7 @@ public class Utility {
             String temp1 = JSONTmp.getString("min");
             String temp2 = JSONTmp.getString("max");
 
-            saveWeatherInfo(context, cityName, cityCode, temp1, temp2, weather, publishTime);
+            saveWeatherInfo(content, cityName, cityCode, temp1, temp2, weather, publishTime);
 
         } catch (JSONException e) {
             e.printStackTrace();

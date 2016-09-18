@@ -1,6 +1,7 @@
 package com.example.ldy.myweather.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.ldy.myweather.R;
+import com.example.ldy.myweather.service.autoUpdateService;
 import com.example.ldy.myweather.util.HttpCallbackListener;
 import com.example.ldy.myweather.util.HttpUtil;
 import com.example.ldy.myweather.util.Utility;
@@ -32,6 +34,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
     private TextView currentDateText;
     private Button switchCity;
     private Button refreshWeather;
+    //Utility u = new Utility(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,5 +146,9 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
         currentDateText.setText(spfs.getString("current_time", ""));
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityNameText.setVisibility(View.VISIBLE);
+
+        //通知更新
+        Intent i = new Intent(this, autoUpdateService.class);
+        startService(i);
     }
 }
